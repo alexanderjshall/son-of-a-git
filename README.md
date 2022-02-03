@@ -9,3 +9,13 @@ CLI utility to streamline common workflows used with the Git &amp; GitHub CLI's.
 - Node
 
 ## Install
+
+
+
+
+
+## Learning!
+### Steps to setup
+
+
+### Architecture
