@@ -1,3 +1,6 @@
 #!/usr/bin/env node
 
-console.log("hello world!!");
+import statCommand from "./commands/stat.js";
+import {SpinnerFactory} from "./utils/spinner-factory.js";
+
+statCommand(SpinnerFactory.CreateDefault('getting git status'));
