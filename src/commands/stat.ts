@@ -2,6 +2,8 @@ import chalk, { ChalkInstance } from "chalk";
 import { Ora } from "ora";
 import simpleGit, { StatusResult } from "simple-git";
 
+
+
 const supportedStatusTypes: Partial<Record<keyof StatusResult, MessageWithColor>> = {
     "staged": {
         message: "🟢 Staged",
@@ -39,22 +41,27 @@ export default async function statCommand(spinner: Ora) {
         const status = await simpleGit().status();    
         const statusMessages = getSupportedStatusMessages(status);
         spinner.stop();
-        if (status.isClean()) console.log(chalk.bgGreen("Working branch clean 😍"))
+        if (status.isClean()) console.log(chalk.green("Working branch clean 😍"))
         else {
             console.log(chalk.bgMagenta("STATUS"));
             statusMessages.forEach(logStatusByType);
         }
     } catch(error) {
         spinner.fail();
-        console.log('Error getting git status: ', error);
+        console.error('Error getting git status: ', error);
     }
 }
 
 function getSupportedStatusMessages(status: StatusResult): StatusMessage[] {
     return Object.keys(supportedStatusTypes).map(supportedStatusType => {
         const { message, color } = supportedStatusTypes[supportedStatusType as keyof StatusResult]!;
+        let files = status[supportedStatusType as keyof StatusResult] as string[]
+        if (supportedStatusType == "modified") {
+            files = files.filter(file => !status.staged.includes(file))
+        }
+
         return new StatusMessage(
-        status[supportedStatusType as keyof StatusResult] as string[], 
+            files, 
             message,
             color
         )
