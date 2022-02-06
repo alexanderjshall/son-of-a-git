@@ -1,11 +1,7 @@
 #!/usr/bin/env node
 
-import commitCommand from "./commands/commit.js";
-import statCommand from "./commands/stat.js";
-import {SpinnerFactory} from "./utils/spinner-factory.js";
+import program from "./commandline.parser.js";
 
 (async function main() {
-
-    await statCommand(SpinnerFactory.CreateDefault('Fetching Git Status'));
-    await commitCommand();
+    await program.parseAsync();
 })();
